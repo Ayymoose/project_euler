@@ -1,4 +1,5 @@
 num_set = {
+0 : "",
 1 : "one",
 2 : "two",
 3 : "three",
@@ -30,28 +31,37 @@ num_set = {
 1000 :"thousand"
 }
 
-# Solution tailored to Problem 17
-
 def crunch(number):
-	str_number = str(number)
-	length = len(str_number)
-	if length == 4:
-		return "onethousand"
-	if length == 3:
-		d1 = int(str_number[0])
-		dr = int(str_number[1:])
-		if dr == 0:
-			return num_set[d1] + num_set[100];
-		else:
-			return num_set[d1] + num_set[100] + "and" + crunch(dr);
-	elif length == 2:  
-		if number <= 19 or number % 10 == 0:
-			return num_set[number];
-		else:
-			return num_set[number - (number % 10)] + num_set[number % 10];
+	if number <= 19:
+		return num_set[number]
 	else:
-		return num_set[number];
-			
+		number_string = str(number)
+		length = len(number_string)
+		if length == 2:
+			return num_set[number - (number % 10)] + num_set[number % 10]
+		elif length == 3:
+			if int(number_string[1:]) == 0:
+				return num_set[int(number_string[0])] + num_set[100]
+			else:
+				return num_set[int(number_string[0])] + num_set[100] + "and" + crunch(int(number_string[1:]))
+		elif length == 4:
+			if int(number_string[1:]) == 0:
+				return num_set[int(number_string[0])] + num_set[1000]
+			else:
+				return num_set[int(number_string[0])] + num_set[1000] + crunch(int(number_string[1:]))
+		else:
+			return "undefined"
+
+#print crunch(19)
+#print crunch(7)
+#print crunch(60)
+#print crunch(25)
+#print crunch(100)
+#print crunch(119)
+#print crunch(234)
+#print crunch(230)
+#print crunch(1000)
+	
 l = 0
 for i in range(1,1001):
 	l += len(crunch(i))
